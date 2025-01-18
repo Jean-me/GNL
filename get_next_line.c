@@ -6,7 +6,7 @@
 /*   By: mesasaki <mesasaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 14:57:20 by mesasaki          #+#    #+#             */
-/*   Updated: 2025/01/18 17:23:13 by mesasaki         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:41:18 by mesasaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,14 @@ char	*get_next_line(int fd)
 	static char	*handover;
 	char		*prev;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= SIZE_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	while (!handover || !ft_strchr(handover, '\n'))
 	{
 		prev = handover;
+		if (handover && *handover == '\0')
+			free(handover);
+		return (NULL);
 		handover = read_joint(fd, handover);
 		if (!handover)
 			return (prev);
@@ -84,42 +87,49 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	int fd;
-// 	char *return_str;
+int	main(void)
+{
+	int fd;
+	char *return_str;
 
-// 	fd = open("test.txt", O_RDONLY);
-// 	// fd = 1;
-// 	if (fd < 0)
-// 		return (1);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力 //
-// 	// free(return_str);
-// 	// int i = 0;
-// 	while (return_str)
-// 	{
-// 		return_str = get_next_line(fd);
-// 		printf("%s", return_str); // 1文字出力
-// 		free(return_str);
-// 		// i++;
-// 	}
+	fd = open("nl", O_RDONLY);
+	// fd = 1;
+	if (fd < 0)
+		return (1);
+	// return_str = get_next_line(fd);
+	// printf("%s", return_str); // 1文字出力
+	// free(return_str);
+	// return_str = get_next_line(fd);
+	// if (return_str == NULL)
+	// {
+	// 	printf("NULL\n");
+	// }
+	// printf("%s", return_str); // 1文字出力
+	// printf("%p", return_str);
+	// free(return_str);
+	// return_str = get_next_line(fd);
+	// printf("%s", return_str); // 1文字出力
+	// free(return_str);
+	// return_str = get_next_line(fd);
+	// printf("%s", return_str); // 1文字出力
+	// free(return_str);
+	// return_str = get_next_line(fd);
+	// printf("%s", return_str); // 1文字出力
+	// free(return_str);
+	// return_str = get_next_line(fd);
+	// printf("%s", return_str); // 1文字出力 //
+	// free(return_str);
+	return_str = get_next_line(fd);
+	int i = 0;
+	while (return_str)
+	{
+		printf("%d, str[%s], 1th_char[%c]\n", i, return_str, *return_str);
+		// 1文字出力
+		free(return_str);
+		i++;
+		return_str = get_next_line(fd);
+	}
 
-// 	close(fd);
-// 	return (0);
-// }
+	close(fd);
+	return (0);
+}
