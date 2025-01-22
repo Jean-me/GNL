@@ -6,11 +6,12 @@
 /*   By: mesasaki <mesasaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 14:57:20 by mesasaki          #+#    #+#             */
-/*   Updated: 2025/01/18 21:22:03 by mesasaki         ###   ########.fr       */
+/*   Updated: 2025/01/22 17:00:55 by mesasaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <time.h>
 
 char	*read_joint(int fd, char *handover);
 char	*get_line_from_handover(char **handover);
@@ -23,7 +24,7 @@ char	*read_joint(int fd, char *handover)
 	char	*new_handover;
 
 	tmp = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!tmp || BUFFER_SIZE >= SIZE_MAX)
+	if (!tmp)
 		return (NULL);
 	bytesread = read(fd, tmp, BUFFER_SIZE);
 	if (bytesread <= 0)
@@ -59,7 +60,10 @@ char	*get_line_from_handover(char **handover)
 			return (NULL);
 		ft_memcpy(line, *handover, i + 1);
 		line[i + 1] = '\0';
-		tmp = ft_strdup(*handover + i + 1);
+		if (ft_strlen(*handover + i + 1) == 0)
+			tmp = NULL;
+		else
+			tmp = ft_strdup(*handover + i + 1);
 		free(*handover);
 		*handover = tmp;
 	}
@@ -69,18 +73,19 @@ char	*get_line_from_handover(char **handover)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*handover;
 	char		*prev;
+	static char	*handover;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	while (!handover || !ft_strchr(handover, '\n'))
 	{
 		prev = handover;
-		if (handover && *handover == '\0')
-			free(handover);
-		return (NULL);
 		handover = read_joint(fd, handover);
+		if (handover && *handover == '\0')
+		{
+			return (free(handover), handover = NULL, NULL);
+		}
 		if (!handover)
 			return (prev);
 	}
@@ -88,49 +93,28 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	int fd;
-// 	char *return_str;
+int	main(void)
+{
+	int fd;
+	char *return_str;
 
-// 	fd = open("nl", O_RDONLY);
-// 	// fd = 1;
-// 	if (fd < 0)
-// 		return (1);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// if (return_str == NULL)
-// 	// {
-// 	// 	printf("NULL\n");
-// 	// }
-// 	// printf("%s", return_str); // 1文字出力
-// 	// printf("%p", return_str);
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力
-// 	// free(return_str);
-// 	// return_str = get_next_line(fd);
-// 	// printf("%s", return_str); // 1文字出力 //
-// 	// free(return_str);
-// 	return_str = get_next_line(fd);
-// 	int i = 0;
-// 	while (return_str)
-// 	{
-// 		printf("%d, str[%s], 1th_char[%c]\n", i, return_str, *return_str);
-// 		// 1文字出力
-// 		free(return_str);
-// 		i++;
-// 		return_str = get_next_line(fd);
-// 	}
+	fd = open("41_with_nl", O_RDONLY);
+	// fd = 0;
+	if (fd < 0)
+		return (1);
 
-// 	close(fd);
-// 	return (0);
-// }
+	return_str = get_next_line(fd);
+	int i = 0;
+	while (return_str)
+	{
+		printf("ループ回数[%d]\n, str[%s]\n, 最初の文字[%c]\n", i, return_str,
+			*return_str);
+		// 1文字出力
+		free(return_str);
+		i++;
+		return_str = get_next_line(fd);
+	}
+
+	close(fd);
+	return (0);
+}

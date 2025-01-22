@@ -6,7 +6,7 @@
 /*   By: mesasaki <mesasaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 14:57:20 by mesasaki          #+#    #+#             */
-/*   Updated: 2025/01/18 17:31:26 by mesasaki         ###   ########.fr       */
+/*   Updated: 2025/01/21 23:45:33 by mesasaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
+# endif
+
+# if BUFFER_SIZE <= 0
+#  error BUFFER_SIZE must be > 0
 # endif
 
 char	*get_next_line(int fd);
