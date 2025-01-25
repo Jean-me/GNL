@@ -6,12 +6,11 @@
 /*   By: mesasaki <mesasaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 14:57:20 by mesasaki          #+#    #+#             */
-/*   Updated: 2025/01/22 17:00:55 by mesasaki         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:46:40 by mesasaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <time.h>
 
 char	*read_joint(int fd, char *handover);
 char	*get_line_from_handover(char **handover);
@@ -93,28 +92,28 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int	main(void)
-{
-	int fd;
-	char *return_str;
+// int	main(void)
+// {
+// 	int fd;
+// 	char *return_str;
 
-	fd = open("41_with_nl", O_RDONLY);
-	// fd = 0;
-	if (fd < 0)
-		return (1);
+// 	fd = open("41_with_nl", O_RDONLY);
+// 	// fd = 0;
+// 	if (fd < 0)
+// 		return (1);
 
-	return_str = get_next_line(fd);
-	int i = 0;
-	while (return_str)
-	{
-		printf("ループ回数[%d]\n, str[%s]\n, 最初の文字[%c]\n", i, return_str,
-			*return_str);
-		// 1文字出力
-		free(return_str);
-		i++;
-		return_str = get_next_line(fd);
-	}
+// 	return_str = get_next_line(fd);
+// 	int i = 0;
+// 	while (return_str)
+// 	{
+// 		printf("ループ回数[%d]\n, str[%s]\n, 最初の文字[%c]\n", i, return_str,
+// 			*return_str);
+// 		// 1文字出力
+// 		free(return_str);
+// 		i++;
+// 		return_str = get_next_line(fd);
+// 	}
 
-	close(fd);
-	return (0);
-}
+// 	close(fd);
+// 	return (0);
+// }
